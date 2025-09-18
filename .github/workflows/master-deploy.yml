@@ -16,9 +16,9 @@ on:
         required: true
         default: "teddysit722week8"
 
-      push:
-        branches:
-          - main
+  push:
+    branches:
+      - main
 
 env:
   IMAGE_TAG: ${{ github.sha }}-${{ github.run_id }}
