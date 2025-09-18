@@ -5,12 +5,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let PRODUCT_API_BASE_URL = '_PRODUCT_API_URL_';
     let ORDER_API_BASE_URL = '_ORDER_API_URL_';
 
-    // Fallback to hardcoded values if placeholders weren't replaced
-    if (PRODUCT_API_BASE_URL === '_PRODUCT_API_URL_') {
-        PRODUCT_API_BASE_URL = 'http://20.11.75.42:8000';  // Your current fallback
-        ORDER_API_BASE_URL = 'http://20.43.108.140:8001';   // Your current fallback
-    }
-
     console.log('Using Product API:', PRODUCT_API_BASE_URL);
     console.log('Using Order API:', ORDER_API_BASE_URL);
 
