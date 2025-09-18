@@ -7,7 +7,7 @@ on:
   # Allow this workflow to be called by other workflows
   workflow_call:
 
-  # Automatically on pushes to main branch
+  # Automatically on pushes to main branch (backend changes only)
   # push:
   #   branches:
   #     - main

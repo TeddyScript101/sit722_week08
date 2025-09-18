@@ -1,21 +1,19 @@
-# week08/.github/workflows/frontend_ci.yml
-
 name: Frontend CI - Build & Push Image
 
 on:
   # Manual trigger
   workflow_dispatch:
 
-  # ADD THIS: Allow this workflow to be called by other workflows
+  # Allow this workflow to be called by other workflows
   workflow_call:
 
-  # Automatically on pushes to main branch
-  # push:
-  #   branches:
-  #     - main
-  #   paths: # Only trigger if changes in the frontend directory
-  #     - "frontend/**"
-  #     - ".github/workflows/frontend_ci.yml" # Trigger if this workflow file changes
+  # Automatically on pushes to main branch (frontend changes only)
+  push:
+    branches:
+      - main
+    paths:
+      - "frontend/**"
+      - ".github/workflows/frontend_ci.yml"
 
 # Define global environment variables that can be used across jobs
 env:

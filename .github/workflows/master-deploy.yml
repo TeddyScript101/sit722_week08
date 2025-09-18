@@ -21,6 +21,7 @@ on:
       - main
 
 env:
+  # Unique image tag for this run
   IMAGE_TAG: ${{ github.sha }}-${{ github.run_id }}
 
 jobs:
@@ -30,6 +31,8 @@ jobs:
   backend_ci:
     uses: ./.github/workflows/backend_ci.yml
     secrets: inherit
+    with:
+      IMAGE_TAG: ${{ env.IMAGE_TAG }}
 
   # ==========================
   # 2️⃣ Frontend CI: Build + Push
@@ -38,9 +41,11 @@ jobs:
     needs: backend_ci
     uses: ./.github/workflows/frontend_ci.yml
     secrets: inherit
+    with:
+      IMAGE_TAG: ${{ env.IMAGE_TAG }}
 
   # ==========================
-  # 3️⃣ Deploy Backend to AKS
+  # 3️⃣ Deploy Backend to AKS with unique image tags
   # ==========================
   deploy_backend:
     needs: [backend_ci, frontend_ci]
@@ -49,10 +54,11 @@ jobs:
       aks_cluster_name: ${{ github.event.inputs.aks_cluster_name }}
       aks_resource_group: ${{ github.event.inputs.aks_resource_group }}
       aks_acr_name: ${{ github.event.inputs.aks_acr_name }}
+      IMAGE_TAG: ${{ env.IMAGE_TAG }}
     secrets: inherit
 
   # ==========================
-  # 4️⃣ Deploy Frontend to AKS
+  # 4️⃣ Deploy Frontend to AKS with unique image tag and updated backend IPs
   # ==========================
   deploy_frontend:
     needs: deploy_backend
@@ -62,4 +68,5 @@ jobs:
       order_api_ip: "http://${{ needs.deploy_backend.outputs.ORDER_API_IP }}:8001"
       aks_cluster_name: ${{ github.event.inputs.aks_cluster_name }}
       aks_resource_group: ${{ github.event.inputs.aks_resource_group }}
+      IMAGE_TAG: ${{ env.IMAGE_TAG }}
     secrets: inherit
