@@ -60,14 +60,17 @@ jobs:
 
       - name: Inject Backend IPs into Frontend main.js
         run: |
-          echo "Injecting IPs into frontend/static/js/main.js"
-          # Ensure frontend/main.js is directly in the path for sed
+          echo "Injecting IPs into frontend/main.js"
+          echo "Product API IP: ${{ inputs.product_api_ip }}"
+          echo "Order API IP: ${{ inputs.order_api_ip }}"
+
+          # Replace the placeholders with actual IPs
           sed -i "s|_PRODUCT_API_URL_|${{ inputs.product_api_ip }}|g" frontend/main.js
           sed -i "s|_ORDER_API_URL_|${{ inputs.order_api_ip }}|g" frontend/main.js
 
           # Display the modified file content for debugging
-          echo "--- Modified main.js content ---"
-          cat frontend/main.js
+          echo "--- Modified main.js content (first 30 lines) ---"
+          head -30 frontend/main.js
           echo "---------------------------------"
 
       # Build and Push Docker image for Frontend

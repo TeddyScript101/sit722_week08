@@ -16,6 +16,26 @@ on:
         required: true
         default: "teddysit722week8"
 
+  # ADD THIS: Allow this workflow to be called by other workflows
+  workflow_call:
+    inputs:
+      aks_cluster_name:
+        required: true
+        type: string
+      aks_resource_group:
+        required: true
+        type: string
+      aks_acr_name:
+        required: true
+        type: string
+    outputs:
+      PRODUCT_API_IP:
+        description: "External IP of Product Service"
+        value: ${{ jobs.deploy_backend.outputs.PRODUCT_API_IP }}
+      ORDER_API_IP:
+        description: "External IP of Order Service"
+        value: ${{ jobs.deploy_backend.outputs.ORDER_API_IP }}
+
 jobs:
   deploy_backend:
     runs-on: ubuntu-latest
@@ -37,11 +57,11 @@ jobs:
 
       - name: Set Kubernetes context (get AKS credentials)
         run: |
-          az aks get-credentials --resource-group ${{ github.event.inputs.aks_resource_group }} --name ${{ github.event.inputs.aks_cluster_name }} --overwrite-existing
+          az aks get-credentials --resource-group ${{ inputs.aks_resource_group }} --name ${{ inputs.aks_cluster_name }} --overwrite-existing
 
       # - name: Attach ACR
       # run: |
-      #   az aks update --name ${{ github.event.inputs.aks_cluster_name }} --resource-group ${{ github.event.inputs.aks_resource_group }} --attach-acr ${{ github.event.inputs.aks_acr_name }}
+      #   az aks update --name ${{ inputs.aks_cluster_name }} --resource-group ${{ inputs.aks_resource_group }} --attach-acr ${{ inputs.aks_acr_name }}
 
       - name: Deploy Backend Infrastructure (Namespace, ConfigMaps, Secrets, Databases)
         run: |

@@ -1,17 +1,18 @@
 // week08/frontend/main.js
 
 document.addEventListener('DOMContentLoaded', () => {
-    // API endpoints for the Product and Order services.
-    // These ports (30000 for Product, 30001 for Order) are mapped
-    // from the Docker containers to the host machine in docker-compose.yml for Example 2.
-    const PRODUCT_API_BASE_URL = 'http://20.11.75.42:8000';
-    const ORDER_API_BASE_URL = 'http://20.43.108.140:8001';
+    // Use placeholder replacement approach - CI/CD will replace these placeholders
+    let PRODUCT_API_BASE_URL = '_PRODUCT_API_URL_';
+    let ORDER_API_BASE_URL = '_ORDER_API_URL_';
 
+    // Fallback to hardcoded values if placeholders weren't replaced
+    if (PRODUCT_API_BASE_URL === '_PRODUCT_API_URL_') {
+        PRODUCT_API_BASE_URL = 'http://20.11.75.42:8000';  // Your current fallback
+        ORDER_API_BASE_URL = 'http://20.43.108.140:8001';   // Your current fallback
+    }
 
-    // Product Service is named 'product-service-w04e2' and exposes port 8000 internally.
-    //const PRODUCT_API_BASE_URL = 'http://product-service-w04e2:8000';
-    // Order Service is named 'order-service-w04e2' and exposes port 8001 internally.
-    //const ORDER_API_BASE_URL = 'http://order-service-w04e2:8001';
+    console.log('Using Product API:', PRODUCT_API_BASE_URL);
+    console.log('Using Order API:', ORDER_API_BASE_URL);
 
     // DOM Elements
     const messageBox = document.getElementById('message-box');

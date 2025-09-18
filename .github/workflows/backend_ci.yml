@@ -8,6 +8,9 @@ on:
   # Manual trigger
   workflow_dispatch:
 
+  # ADD THIS: Allow this workflow to be called by other workflows
+  workflow_call:
+
   # Automatically on pushes to main branch
   push:
     branches:

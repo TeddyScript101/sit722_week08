@@ -1,0 +1,39 @@
+# .github/workflows/master-deploy.yml
+name: Master - Full Deployment Pipeline
+
+on:
+  workflow_dispatch:
+    inputs:
+      aks_cluster_name:
+        description: "Name of the AKS Cluster"
+        required: true
+        default: "aks-week08"
+      aks_resource_group:
+        description: "Resource Group of the AKS Cluster"
+        required: true
+        default: "week08-rg"
+      aks_acr_name:
+        description: "Name of ACR"
+        required: true
+        default: "teddysit722week8"
+
+jobs:
+  # Step 1: Deploy Backend Services
+  deploy_backend:
+    uses: ./.github/workflows/backend-cd.yml
+    with:
+      aks_cluster_name: ${{ github.event.inputs.aks_cluster_name }}
+      aks_resource_group: ${{ github.event.inputs.aks_resource_group }}
+      aks_acr_name: ${{ github.event.inputs.aks_acr_name }}
+    secrets: inherit
+
+  # Step 2: Deploy Frontend with Backend IPs
+  deploy_frontend:
+    needs: deploy_backend
+    uses: ./.github/workflows/frontend-cd.yml
+    with:
+      product_api_ip: "http://${{ needs.deploy_backend.outputs.PRODUCT_API_IP }}:8000"
+      order_api_ip: "http://${{ needs.deploy_backend.outputs.ORDER_API_IP }}:8001"
+      aks_cluster_name: ${{ github.event.inputs.aks_cluster_name }}
+      aks_resource_group: ${{ github.event.inputs.aks_resource_group }}
+    secrets: inherit
