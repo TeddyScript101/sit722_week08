@@ -8,12 +8,12 @@ on:
   workflow_call:
 
   # Automatically on pushes to main branch
-  push:
-    branches:
-      - main
-    paths:
-      - "backend/**"
-      - ".github/workflows/backend_ci.yml"
+  # push:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - "backend/**"
+  #     - ".github/workflows/backend_ci.yml"
 
 # Environment variables
 env:
