@@ -8,9 +8,9 @@ on:
   workflow_call:
     inputs:
       IMAGE_TAG:
-      description: "Unique image tag to apply"
-      required: true
-      type: string
+        description: "Unique image tag to apply"
+        required: true
+        type: string
 
   # Automatically on pushes to main branch (backend changes only)
   # push:
