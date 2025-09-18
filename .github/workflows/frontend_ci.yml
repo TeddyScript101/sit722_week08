@@ -6,14 +6,19 @@ on:
 
   # Allow this workflow to be called by other workflows
   workflow_call:
+    inputs:
+      IMAGE_TAG:
+        description: "Unique image tag to apply"
+        required: true
+        type: string
 
   # Automatically on pushes to main branch (frontend changes only)
-  push:
-    branches:
-      - main
-    paths:
-      - "frontend/**"
-      - ".github/workflows/frontend_ci.yml"
+  # push:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - "frontend/**"
+  #     - ".github/workflows/frontend_ci.yml"
 
 # Define global environment variables that can be used across jobs
 env:
