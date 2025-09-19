@@ -11,18 +11,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Step 1: Build Product Service Image
+      # Step 1: Install Docker Scout CLI
+      - name: Install Docker Scout
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/docker/scout-cli/main/install.sh | sh
+
+      # Step 2: Build Product Service Image
       - name: Build Product Service Image
         run: docker build -t product_service:demo ./backend/product_service/
 
-      # Step 2: Scan Product Service with Docker Scout
+      # Step 3: Scan Product Service with Docker Scout
       - name: Scan Product Service Image
         run: docker scout quickview product_service:demo
 
-      # Step 3: Build Order Service Image
+      # Step 4: Build Order Service Image
       - name: Build Order Service Image
         run: docker build -t order_service:demo ./backend/order_service/
 
-      # Step 4: Scan Order Service with Docker Scout
+      # Step 5: Scan Order Service with Docker Scout
       - name: Scan Order Service Image
         run: docker scout quickview order_service:demo
