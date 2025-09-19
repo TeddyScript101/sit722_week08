@@ -1,0 +1,28 @@
+name: Backend CI - Docker Scout Demo
+
+on:
+  workflow_dispatch:
+
+jobs:
+  docker_scout_demo:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 1: Build Product Service Image
+      - name: Build Product Service Image
+        run: docker build -t product_service:demo ./backend/product_service/
+
+      # Step 2: Scan Product Service with Docker Scout
+      - name: Scan Product Service Image
+        run: docker scout quickview product_service:demo
+
+      # Step 3: Build Order Service Image
+      - name: Build Order Service Image
+        run: docker build -t order_service:demo ./backend/order_service/
+
+      # Step 4: Scan Order Service with Docker Scout
+      - name: Scan Order Service Image
+        run: docker scout quickview order_service:demo

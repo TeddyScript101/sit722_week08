@@ -21,18 +21,12 @@ on:
       - main
 
 jobs:
-  # ==========================
-  # 1️⃣ Backend CI: Test + Build + Push
-  # ==========================
   backend_ci:
     uses: ./.github/workflows/backend_ci.yml
     secrets: inherit
     with:
       IMAGE_TAG: ${{ github.sha }}-${{ github.run_id }}
 
-  # ==========================
-  # 2️⃣ Frontend CI: Build + Push
-  # ==========================
   frontend_ci:
     needs: backend_ci
     uses: ./.github/workflows/frontend_ci.yml
@@ -40,9 +34,6 @@ jobs:
     with:
       IMAGE_TAG: ${{ github.sha }}-${{ github.run_id }}
 
-  # ==========================
-  # 3️⃣ Deploy Backend to AKS with unique image tags
-  # ==========================
   deploy_backend:
     needs: [backend_ci, frontend_ci]
     uses: ./.github/workflows/backend-cd.yml
@@ -53,9 +44,6 @@ jobs:
       IMAGE_TAG: ${{ github.sha }}-${{ github.run_id }}
     secrets: inherit
 
-  # ==========================
-  # 4️⃣ Deploy Frontend to AKS with unique image tag and updated backend IPs
-  # ==========================
   deploy_frontend:
     needs: deploy_backend
     uses: ./.github/workflows/frontend-cd.yml
